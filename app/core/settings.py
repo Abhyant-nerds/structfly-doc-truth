@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     default_source_type: str = "text"
 
     dspy_provider: str = Field(default="ollama_chat", min_length=1)
-    dspy_model: str = Field(default="qwen2.5:7b", min_length=1)
+    dspy_model: str = Field(default="qwen2.5vl:7b", min_length=1)
     dspy_api_base: str = Field(default="http://localhost:11434", min_length=1)
     dspy_api_key: str = ""
     dspy_model_type: str | None = None

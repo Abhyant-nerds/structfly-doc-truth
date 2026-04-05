@@ -3,3 +3,4 @@ uvicorn
 dspy
 langgraph
 pydantic-settings
+python-multipart

@@ -18,6 +18,7 @@ dependencies = [
   "dspy",
   "langgraph",
   "pydantic-settings",
+  "python-multipart",
 ]
 
 [project.optional-dependencies]

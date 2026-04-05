@@ -7,6 +7,7 @@ StructflyDocTruth is a FastAPI + LangGraph pipeline for converting unstructured 
 - `dspy.configure(...)` executed once at application startup
 - Ollama is the default provider, but model/provider are swappable without code changes
 - Typed ingest request and response models
+- Direct file ingestion using `dspy.File` for `.pdf`, `.txt`, `.csv`, `.xlsx`, `.xls`, `.docx`, and `.msg`
 - Deterministic extraction fallbacks when the LLM path fails
 - Health endpoint for basic operational visibility
 
@@ -16,7 +17,7 @@ Copy `.env.example` to `.env` and adjust values as needed.
 
 ```env
 DSPY_PROVIDER=ollama_chat
-DSPY_MODEL=qwen2.5:7b
+DSPY_MODEL=qwen2.5vl:7b
 DSPY_API_BASE=http://localhost:11434
 DSPY_API_KEY=
 DSPY_MODEL_TYPE=
@@ -33,7 +34,7 @@ The active DSPy model identifier is assembled as:
 
 Examples:
 
-- Ollama chat model: `ollama_chat/qwen2.5:7b`
+- Ollama chat model: `ollama_chat/qwen2.5vl:7b`
 - OpenAI-compatible local server: `openai/meta-llama/Llama-3.1-8B-Instruct`
 - Hosted provider later: `openai/gpt-4o-mini`, `anthropic/claude-sonnet-4-5-20250929`, etc.
 
@@ -49,7 +50,7 @@ Start Ollama and pull a model if needed:
 
 ```bash
 ollama serve
-ollama pull qwen2.5:7b
+ollama pull qwen2.5vl:7b
 ```
 
 Run the API:
@@ -96,6 +97,33 @@ Response shape:
 ### `GET /health`
 
 Returns service status plus the active DSPy model configuration.
+
+### `POST /ingest-file`
+
+Accepts a multipart file upload and passes the file directly into DSPy using `dspy.File`.
+
+Supported file types:
+
+- `.pdf`
+- `.txt`
+- `.csv`
+- `.xlsx`
+- `.xls`
+- `.docx`
+- `.msg`
+
+Example:
+
+```bash
+curl -X POST http://127.0.0.1:8000/ingest-file \
+  -F "file=@/absolute/path/to/invoice.pdf"
+```
+
+Important:
+
+- Uploaded files are sent to DSPy without first extracting text in the application layer.
+- Runtime success depends on whether the configured model/provider supports file-native inputs.
+- Text-only models may still fail on binary documents even though the API accepts them.
 
 ## Future model changes
 
