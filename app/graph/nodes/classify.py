@@ -29,6 +29,8 @@ def _fallback_document_type(state) -> str:
         return "pdf_document"
     if source_type == "word_document":
         return "word_document"
+    if source_type == "spreadsheet":
+        return "spreadsheet"
     return "generic_document"
 
 

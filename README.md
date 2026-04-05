@@ -7,7 +7,7 @@ StructflyDocTruth is a FastAPI + LangGraph pipeline for converting unstructured 
 - `dspy.configure(...)` executed once at application startup
 - Ollama is the default provider, but model/provider are swappable without code changes
 - Typed ingest request and response models
-- Direct file ingestion using `dspy.File` for `.pdf`, `.txt`, `.docx`, and `.msg`
+- Direct file ingestion using `dspy.File` for `.pdf`, `.txt`, `.csv`, `.xlsx`, `.xls`, `.docx`, and `.msg`
 - Deterministic extraction fallbacks when the LLM path fails
 - Health endpoint for basic operational visibility
 
@@ -106,6 +106,9 @@ Supported file types:
 
 - `.pdf`
 - `.txt`
+- `.csv`
+- `.xlsx`
+- `.xls`
 - `.docx`
 - `.msg`
 

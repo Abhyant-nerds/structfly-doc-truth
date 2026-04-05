@@ -1,0 +1,7 @@
+field,value
+invoice_number,INV-1001
+vendor,ABC Ltd
+customer,Structfly Technologies
+invoice_date,2026-04-01
+total_amount,12500 INR
+payment_terms,Net 15

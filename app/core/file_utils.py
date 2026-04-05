@@ -4,6 +4,12 @@ from pathlib import Path
 SUPPORTED_FILE_TYPES = {
     ".pdf": ("application/pdf", "pdf"),
     ".txt": ("text/plain", "text"),
+    ".csv": ("text/csv", "spreadsheet"),
+    ".xlsx": (
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "spreadsheet",
+    ),
+    ".xls": ("application/vnd.ms-excel", "spreadsheet"),
     ".docx": (
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "word_document",

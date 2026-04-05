@@ -51,7 +51,7 @@ async def ingest_file(file: UploadFile = File(...)) -> IngestResponse:
     if not file.filename or not is_supported_filename(file.filename):
         raise HTTPException(
             status_code=400,
-            detail="Unsupported file type. Supported extensions are .pdf, .txt, .docx, and .msg",
+            detail="Unsupported file type. Supported extensions are .pdf, .txt, .csv, .xlsx, .xls, .docx, and .msg",
         )
 
     file_bytes = await file.read()
