@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     app_env: Literal["development", "staging", "production"] = "development"
     log_level: str = "INFO"
     default_source_type: str = "text"
+    sqlite_db_path: str = "storage/review_workflow.db"
+    upload_storage_dir: str = "storage/uploads"
 
     dspy_provider: str = Field(default="ollama_chat", min_length=1)
     dspy_model: str = Field(default="qwen2.5vl:7b", min_length=1)

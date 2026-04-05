@@ -19,6 +19,7 @@ dependencies = [
   "langgraph",
   "pydantic-settings",
   "python-multipart",
+  "jinja2",
 ]
 
 [project.optional-dependencies]

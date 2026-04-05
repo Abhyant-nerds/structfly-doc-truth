@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TruthForge Batch Review</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="shell shell-review">
+    <section class="hero-card">
+      <p class="eyebrow">Batch Review</p>
+      <h1 id="batch-title">Loading batch...</h1>
+      <p id="batch-meta" class="lede"></p>
+    </section>
+
+    <section class="panel reviewer-panel">
+      <label class="field-block">
+        <span>Reviewed By</span>
+        <input id="reviewed_by" type="text" placeholder="reviewer@example.com">
+      </label>
+      <div class="button-row">
+        <button id="approve-button" type="button">Approve Reviewed Fields</button>
+        <p id="review-status" class="status-text"></p>
+      </div>
+    </section>
+
+    <section id="documents" class="documents-grid"></section>
+  </main>
+
+  <script>
+    const batchId = window.location.pathname.split("/").pop();
+    const documentsRoot = document.getElementById("documents");
+    const reviewStatus = document.getElementById("review-status");
+    const batchTitle = document.getElementById("batch-title");
+    const batchMeta = document.getElementById("batch-meta");
+    let batchData = null;
+
+    function createFieldRow(fieldName = "", fieldValue = "") {
+      const row = document.createElement("div");
+      row.className = "field-row";
+      row.innerHTML = `
+        <input class="field-name" type="text" value="${fieldName}" placeholder="field_name">
+        <input class="field-value" type="text" value="${fieldValue}" placeholder="field_value">
+        <button type="button" class="remove-row">Delete</button>
+      `;
+      row.querySelector(".remove-row").addEventListener("click", () => row.remove());
+      return row;
+    }
+
+    function renderDocument(document) {
+      const card = document.createElement("article");
+      card.className = "document-card";
+      card.dataset.documentId = document.document_id;
+
+      const errorHtml = (document.processing_errors || []).map((error) => {
+        return `<li><strong>${error.stage}</strong>: ${error.message}</li>`;
+      }).join("");
+
+      card.innerHTML = `
+        <header class="document-header">
+          <div>
+            <h2>${document.filename}</h2>
+            <p>${document.source_type} • ${document.document_type_guess || "unknown_type"}</p>
+          </div>
+          <span class="pill">${document.review_status}</span>
+        </header>
+        ${errorHtml ? `<ul class="error-list">${errorHtml}</ul>` : ""}
+        <div class="field-table" data-fields></div>
+        <button type="button" class="secondary add-row">Add Field</button>
+      `;
+
+      const fieldTable = card.querySelector("[data-fields]");
+      const initialFields = document.final_fields.length ? document.final_fields.map((field) => ({
+        field_name: field.field_name,
+        field_value: field.field_value,
+      })) : document.draft_fields.map((field) => ({
+        field_name: field.proposed_name,
+        field_value: field.raw_value,
+      }));
+
+      initialFields.forEach((field) => {
+        fieldTable.appendChild(createFieldRow(field.field_name, field.field_value));
+      });
+
+      if (!initialFields.length) {
+        fieldTable.appendChild(createFieldRow("", ""));
+      }
+
+      card.querySelector(".add-row").addEventListener("click", () => {
+        fieldTable.appendChild(createFieldRow("", ""));
+      });
+
+      return card;
+    }
+
+    function collectPayload() {
+      return {
+        reviewed_by: document.getElementById("reviewed_by").value || null,
+        documents: Array.from(document.querySelectorAll(".document-card")).map((card) => ({
+          document_id: card.dataset.documentId,
+          final_fields: Array.from(card.querySelectorAll(".field-row")).map((row) => ({
+            field_name: row.querySelector(".field-name").value.trim(),
+            field_value: row.querySelector(".field-value").value.trim(),
+          })).filter((field) => field.field_name && field.field_value),
+        })),
+      };
+    }
+
+    async function loadBatch() {
+      const response = await fetch(`/api/review-batches/${batchId}`);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.detail || "Failed to load batch");
+      }
+
+      batchData = data;
+      batchTitle.textContent = data.use_case_name;
+      batchMeta.textContent = `Batch ${data.batch_id} • ${data.documents.length} documents • ${data.status}`;
+      documentsRoot.innerHTML = "";
+      data.documents.forEach((document) => {
+        documentsRoot.appendChild(renderDocument(document));
+      });
+    }
+
+    document.getElementById("approve-button").addEventListener("click", async () => {
+      reviewStatus.textContent = "Submitting reviewed fields...";
+      try {
+        const response = await fetch(`/api/review-batches/${batchId}/submit`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(collectPayload()),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.detail || "Failed to submit review");
+        }
+
+        reviewStatus.textContent = "Review saved to SQLite.";
+        await loadBatch();
+      } catch (error) {
+        reviewStatus.textContent = error.message;
+      }
+    });
+
+    loadBatch().catch((error) => {
+      reviewStatus.textContent = error.message;
+    });
+  </script>
+</body>
+</html>
