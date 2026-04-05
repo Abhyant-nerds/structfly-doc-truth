@@ -1,5 +1,7 @@
 import logging
 
+from app.core.llm_runtime import invoke_with_retries
+from app.core.settings import get_settings
 from app.dspy_modules.doc_type_classifier import DocumentTypeClassifier
 
 
@@ -38,18 +40,29 @@ def guess_document_type(state):
     document_text = state.get("extracted_text", "")
     document_file = state.get("document_file")
     classifier = DocumentTypeClassifier()
+    settings = get_settings()
 
-    try:
-        pred = classifier(
+    pred = invoke_with_retries(
+        state=state,
+        stage="document_type_classification",
+        invoke=lambda: classifier(
             document_text=document_text,
             document_file=document_file,
             source_type=state["source_type"],
             filename=state.get("filename", ""),
             structure_hint="basic",
-        )
+        ),
+        validate=lambda result: (
+            bool(getattr(result, "document_type", "").strip()),
+            "Expected non-empty 'document_type' in DSPy output",
+        ),
+        logger=logger,
+        max_attempts=settings.dspy_retry_attempts,
+    )
+
+    if pred is not None:
         predicted_type = getattr(pred, "document_type", "").strip()
-    except Exception:
-        logger.exception("DSPy document classification failed, using heuristic fallback")
+    else:
         predicted_type = ""
 
     state["document_type_guess"] = predicted_type or _fallback_document_type(state)

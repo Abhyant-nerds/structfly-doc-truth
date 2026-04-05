@@ -26,6 +26,7 @@ class Settings(BaseSettings):
     dspy_temperature: float = 0.0
     dspy_max_tokens: int = 1200
     dspy_timeout_seconds: int = 60
+    dspy_retry_attempts: int = 2
 
     @property
     def dspy_model_identifier(self) -> str:

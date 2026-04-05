@@ -24,6 +24,7 @@ DSPY_MODEL_TYPE=
 DSPY_TEMPERATURE=0.0
 DSPY_MAX_TOKENS=1200
 DSPY_TIMEOUT_SECONDS=60
+DSPY_RETRY_ATTEMPTS=2
 ```
 
 The active DSPy model identifier is assembled as:
@@ -124,6 +125,7 @@ Important:
 - Uploaded files are sent to DSPy without first extracting text in the application layer.
 - Runtime success depends on whether the configured model/provider supports file-native inputs.
 - Text-only models may still fail on binary documents even though the API accepts them.
+- The LLM-backed DSPy stages validate their outputs and retry up to `DSPY_RETRY_ATTEMPTS` times before recording a workflow error.
 
 ## Future model changes
 
