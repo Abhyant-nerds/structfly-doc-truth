@@ -1,0 +1,6 @@
+Resume
+Name: Aditi Rao
+Email: aditi.rao@example.com
+Company: BluePeak Labs
+Skills: Python, FastAPI, NLP
+Experience: 5 years

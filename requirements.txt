@@ -2,4 +2,4 @@ fastapi
 uvicorn
 dspy
 langgraph
-hello
+pydantic-settings
