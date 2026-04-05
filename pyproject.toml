@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "structfly-doc-truth"
+version = "0.1.0"
+description = "Document-to-ground-truth extraction service built with FastAPI, LangGraph, and DSPy."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Rishikeesh Mahamuni" }
+]
+dependencies = [
+  "fastapi",
+  "uvicorn",
+  "dspy",
+  "langgraph",
+  "pydantic-settings",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx",
+  "ipykernel",
+  "jupyter",
+  "notebook",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-dir]
+"" = "."
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
