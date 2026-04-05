@@ -17,13 +17,19 @@ class FieldProposalSignature(dspy.Signature):
     """
 
     document_text = dspy.InputField(
-        desc="Full extracted document text from which candidate business entities and values must be proposed."
+        desc="Optional extracted document text from which candidate business entities and values may be proposed."
+    )
+    document_file: dspy.File = dspy.InputField(
+        desc="Optional uploaded file object passed directly to the model. It may be a PDF, TXT, DOCX, or MSG email file."
     )
     document_type_guess = dspy.InputField(
         desc="Best current guess for the document category, such as invoice, contract, resume, or generic_document."
     )
+    filename = dspy.InputField(
+        desc="Original file name when available. Use it as a secondary hint for the document type and expected fields."
+    )
     tool_context = dspy.InputField(
-        desc="JSON string containing outputs from deterministic helper tools. Use it to ground field proposals in explicit evidence."
+        desc="JSON string containing outputs from deterministic helper tools. Use it to ground field proposals in explicit evidence when text was available."
     )
     output = dspy.OutputField(
         desc='JSON array of objects with keys "proposed_name" and "raw_value". Each proposed_name should be specific and normalized to snake_case.'
@@ -39,6 +45,9 @@ class DocumentDiscoveryReActAgent(dspy.Module):
         self.propose_fields = dspy.ChainOfThought(FieldProposalSignature)
 
     def _build_tool_context(self, document_text):
+        if not document_text:
+            return json.dumps({}, ensure_ascii=True)
+
         tool_outputs = {}
 
         for tool in self.tools:
@@ -52,9 +61,13 @@ class DocumentDiscoveryReActAgent(dspy.Module):
 
     def forward(self, document_bundle, document_type_guess):
         document_text = document_bundle.get("text", "")
+        document_file = document_bundle.get("file")
+        filename = document_bundle.get("filename", "")
         tool_context = self._build_tool_context(document_text)
         return self.propose_fields(
             document_text=document_text,
+            document_file=document_file,
             document_type_guess=document_type_guess,
+            filename=filename,
             tool_context=tool_context,
         )

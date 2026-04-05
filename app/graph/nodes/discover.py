@@ -84,6 +84,7 @@ def _merge_structured_candidates(discovered_candidates, fallback_candidates):
 
 def discover_candidate_fields(state):
     extracted_text = state.get("extracted_text", "")
+    document_file = state.get("document_file")
     tools = [extract_named_entities, extract_key_value_pairs]
     agent = DocumentDiscoveryReActAgent(tools)
     fallback_candidates = extract_named_entities(extracted_text) + extract_key_value_pairs(
@@ -92,7 +93,11 @@ def discover_candidate_fields(state):
 
     try:
         result = agent(
-            document_bundle={"text": extracted_text},
+            document_bundle={
+                "text": extracted_text,
+                "file": document_file,
+                "filename": state.get("filename", ""),
+            },
             document_type_guess=state["document_type_guess"],
         )
         discovered_candidates = _normalize_candidates(result)

@@ -17,14 +17,32 @@ def _heuristic_document_type(document_text: str) -> str:
     return "generic_document"
 
 
+def _fallback_document_type(state) -> str:
+    document_text = state.get("extracted_text", "")
+    if document_text:
+        return _heuristic_document_type(document_text)
+
+    source_type = (state.get("source_type") or "").lower()
+    if source_type == "email":
+        return "email"
+    if source_type == "pdf":
+        return "pdf_document"
+    if source_type == "word_document":
+        return "word_document"
+    return "generic_document"
+
+
 def guess_document_type(state):
     document_text = state.get("extracted_text", "")
+    document_file = state.get("document_file")
     classifier = DocumentTypeClassifier()
 
     try:
         pred = classifier(
             document_text=document_text,
+            document_file=document_file,
             source_type=state["source_type"],
+            filename=state.get("filename", ""),
             structure_hint="basic",
         )
         predicted_type = getattr(pred, "document_type", "").strip()
@@ -32,5 +50,5 @@ def guess_document_type(state):
         logger.exception("DSPy document classification failed, using heuristic fallback")
         predicted_type = ""
 
-    state["document_type_guess"] = predicted_type or _heuristic_document_type(document_text)
+    state["document_type_guess"] = predicted_type or _fallback_document_type(state)
     return state

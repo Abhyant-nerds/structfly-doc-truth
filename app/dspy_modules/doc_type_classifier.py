@@ -2,13 +2,19 @@ import dspy
 
 
 class DocumentTypeSignature(dspy.Signature):
-    """Classify the broad type of a document from its textual content and source metadata."""
+    """Classify the broad type of a document from file content, text content, and source metadata."""
 
     document_text = dspy.InputField(
-        desc="Full extracted document text to classify. Use the text content as the primary signal."
+        desc="Optional extracted text for the document. Use it when available, but also reason over the uploaded file if provided."
+    )
+    document_file: dspy.File = dspy.InputField(
+        desc="Optional uploaded file object passed directly to the model. It may be a PDF, TXT, DOCX, or MSG email file."
     )
     source_type = dspy.InputField(
         desc="Document source or modality such as text, pdf, image_ocr, or email."
+    )
+    filename = dspy.InputField(
+        desc="Original file name when available. Use it as a weak hint only, for example invoice.pdf or candidate_resume.docx."
     )
     structure_hint = dspy.InputField(
         desc="Short hint about expected layout or structure, for example basic, tabular, or semi_structured."
@@ -25,9 +31,11 @@ class DocumentTypeClassifier(dspy.Module):
         super().__init__()
         self.predict = dspy.Predict(DocumentTypeSignature)
 
-    def forward(self, document_text, source_type, structure_hint):
+    def forward(self, document_text, document_file, source_type, filename, structure_hint):
         return self.predict(
             document_text=document_text,
+            document_file=document_file,
             source_type=source_type,
+            filename=filename,
             structure_hint=structure_hint,
         )

@@ -3,6 +3,9 @@ from typing import Any, TypedDict
 class GraphState(TypedDict, total=False):
     document_id: str
     source_type: str
+    filename: str
+    mime_type: str
+    document_file: Any
     raw_text: str
     extracted_text: str
     document_type_guess: str
