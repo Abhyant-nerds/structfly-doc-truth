@@ -4,7 +4,9 @@ import dspy
 
 
 class FieldProposalSignature(dspy.Signature):
-    """Return only a JSON array of field proposals.
+    """Propose structured entity fields and values from a document.
+
+    Return only a JSON array of field proposals.
 
     Each array item must be an object with:
     - proposed_name: normalized snake_case entity name such as invoice_number, vendor, customer
@@ -14,13 +16,23 @@ class FieldProposalSignature(dspy.Signature):
     named_entity, value, field, item, text, or unknown unless nothing more specific is possible.
     """
 
-    document_text = dspy.InputField()
-    document_type_guess = dspy.InputField()
-    tool_context = dspy.InputField()
-    output = dspy.OutputField()
+    document_text = dspy.InputField(
+        desc="Full extracted document text from which candidate business entities and values must be proposed."
+    )
+    document_type_guess = dspy.InputField(
+        desc="Best current guess for the document category, such as invoice, contract, resume, or generic_document."
+    )
+    tool_context = dspy.InputField(
+        desc="JSON string containing outputs from deterministic helper tools. Use it to ground field proposals in explicit evidence."
+    )
+    output = dspy.OutputField(
+        desc='JSON array of objects with keys "proposed_name" and "raw_value". Each proposed_name should be specific and normalized to snake_case.'
+    )
 
 
 class DocumentDiscoveryReActAgent(dspy.Module):
+    """DSPy module that converts document text plus tool evidence into structured field proposals."""
+
     def __init__(self, tools):
         super().__init__()
         self.tools = tools
