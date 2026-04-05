@@ -28,6 +28,7 @@ class IngestResponse(BaseModel):
     raw_candidate_fields: list[dict[str, Any]] = Field(default_factory=list)
     review_package: dict[str, Any]
     ground_truth_record: dict[str, Any]
+    processing_errors: list[dict[str, str]] = Field(default_factory=list)
 
 
 @router.post("/ingest")

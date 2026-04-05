@@ -1,6 +1,8 @@
 import logging
 import json
 
+from app.core.llm_runtime import invoke_with_retries
+from app.core.settings import get_settings
 from app.dspy_modules.react_agent import DocumentDiscoveryReActAgent
 from app.tools.ner import extract_named_entities
 from app.tools.kv_extractor import extract_key_value_pairs
@@ -30,6 +32,22 @@ def _normalize_candidates(result):
         return [output]
 
     return []
+
+
+def _validate_discovery_result(result):
+    normalized_candidates = _normalize_candidates(result)
+    if not isinstance(normalized_candidates, list):
+        return False, "Expected discovery output to normalize to a list of candidate fields"
+
+    for candidate in normalized_candidates:
+        if not isinstance(candidate, dict):
+            return False, "Expected every discovered candidate to be a dictionary"
+        if not str(candidate.get("proposed_name", "")).strip():
+            return False, "Expected every discovered candidate to contain a non-empty proposed_name"
+        if not str(candidate.get("raw_value", "")).strip():
+            return False, "Expected every discovered candidate to contain a non-empty raw_value"
+
+    return True, None
 
 
 def _dedupe_candidates(candidates):
@@ -87,22 +105,30 @@ def discover_candidate_fields(state):
     document_file = state.get("document_file")
     tools = [extract_named_entities, extract_key_value_pairs]
     agent = DocumentDiscoveryReActAgent(tools)
+    settings = get_settings()
     fallback_candidates = extract_named_entities(extracted_text) + extract_key_value_pairs(
         {"text": extracted_text}
     )
 
-    try:
-        result = agent(
+    result = invoke_with_retries(
+        state=state,
+        stage="field_discovery",
+        invoke=lambda: agent(
             document_bundle={
                 "text": extracted_text,
                 "file": document_file,
                 "filename": state.get("filename", ""),
             },
             document_type_guess=state["document_type_guess"],
-        )
+        ),
+        validate=_validate_discovery_result,
+        logger=logger,
+        max_attempts=settings.dspy_retry_attempts,
+    )
+
+    if result is not None:
         discovered_candidates = _normalize_candidates(result)
-    except Exception:
-        logger.exception("DSPy discovery failed, using deterministic fallback extractors")
+    else:
         discovered_candidates = []
 
     state["raw_candidate_fields"] = _dedupe_candidates(

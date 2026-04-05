@@ -16,3 +16,4 @@ class GraphState(TypedDict, total=False):
     review_status: str
     reviewed_fields: list[dict[str, Any]]
     ground_truth_record: dict[str, Any]
+    processing_errors: list[dict[str, str]]
