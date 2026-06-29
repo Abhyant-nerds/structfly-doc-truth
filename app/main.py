@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+from app.api.classification_routes import router as classification_router
 from app.api.ingest_routes import router as ingest_router
 from app.api.review_routes import router as review_router
 from app.core.database import ReviewStore
@@ -28,6 +29,7 @@ settings = get_settings()
 app = FastAPI(title=settings.app_name, lifespan=lifespan)
 app.include_router(ingest_router)
 app.include_router(review_router)
+app.include_router(classification_router)
 app.mount(
     "/static",
     StaticFiles(directory=Path(__file__).resolve().parent / "static"),

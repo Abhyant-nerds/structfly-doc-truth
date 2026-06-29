@@ -106,6 +106,48 @@ Response shape:
 
 Returns service status plus the active DSPy model configuration.
 
+### `POST /classify-email`
+
+Classifies a commercial banking customer email into an operational category using local OKF markdown knowledge and the configured DSPy model.
+
+Request:
+
+```json
+{
+  "subject": "Change of registered mobile number",
+  "body": "Please update the registered mobile number for our current account."
+}
+```
+
+Response shape:
+
+```json
+{
+  "final_category_id": "CAT-002",
+  "final_category_name": "Registered Phone Number Change",
+  "confidence": 0.94,
+  "needs_review": false,
+  "routing_summary": {},
+  "candidates": [],
+  "evidence": [],
+  "reason": "...",
+  "validation": {},
+  "processing_errors": []
+}
+```
+
+The category knowledge lives under:
+
+```text
+app/knowledge/commercial_banking/
+```
+
+Use the POC notebook for manual testing:
+
+```text
+notebooks/email_classification_poc_testing.ipynb
+```
+
 ### `POST /ingest-file`
 
 Accepts a multipart file upload and passes the file directly into DSPy using `dspy.File`.
