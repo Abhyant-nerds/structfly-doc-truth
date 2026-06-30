@@ -3178,6 +3178,7 @@ source = { editable = "." }
 dependencies = [
     { name = "dspy" },
     { name = "fastapi" },
+    { name = "jinja2" },
     { name = "langgraph" },
     { name = "pydantic-settings" },
     { name = "python-multipart" },
@@ -3198,6 +3199,7 @@ requires-dist = [
     { name = "fastapi" },
     { name = "httpx", marker = "extra == 'dev'" },
     { name = "ipykernel", marker = "extra == 'dev'" },
+    { name = "jinja2" },
     { name = "jupyter", marker = "extra == 'dev'" },
     { name = "langgraph" },
     { name = "notebook", marker = "extra == 'dev'" },

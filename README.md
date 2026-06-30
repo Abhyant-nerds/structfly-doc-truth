@@ -10,6 +10,7 @@ StructflyDocTruth is a FastAPI + LangGraph pipeline for converting unstructured 
 - Direct file ingestion using `dspy.File` for `.pdf`, `.txt`, `.csv`, `.xlsx`, `.xls`, `.docx`, and `.msg`
 - Deterministic extraction fallbacks when the LLM path fails
 - Health endpoint for basic operational visibility
+- SQLite-backed human review workflow with batch upload and browser UI
 
 ## Configuration
 
@@ -60,6 +61,12 @@ Run the API:
 uvicorn app.main:app --reload
 ```
 
+Open the review UI:
+
+```text
+http://127.0.0.1:8000/
+```
+
 ## API
 
 ### `POST /ingest`
@@ -99,6 +106,48 @@ Response shape:
 
 Returns service status plus the active DSPy model configuration.
 
+### `POST /classify-email`
+
+Classifies a commercial banking customer email into an operational category using local OKF markdown knowledge and the configured DSPy model.
+
+Request:
+
+```json
+{
+  "subject": "Change of registered mobile number",
+  "body": "Please update the registered mobile number for our current account."
+}
+```
+
+Response shape:
+
+```json
+{
+  "final_category_id": "CAT-002",
+  "final_category_name": "Registered Phone Number Change",
+  "confidence": 0.94,
+  "needs_review": false,
+  "routing_summary": {},
+  "candidates": [],
+  "evidence": [],
+  "reason": "...",
+  "validation": {},
+  "processing_errors": []
+}
+```
+
+The category knowledge lives under:
+
+```text
+app/knowledge/commercial_banking/
+```
+
+Use the POC notebook for manual testing:
+
+```text
+notebooks/email_classification_poc_testing.ipynb
+```
+
 ### `POST /ingest-file`
 
 Accepts a multipart file upload and passes the file directly into DSPy using `dspy.File`.
@@ -126,6 +175,70 @@ Important:
 - Runtime success depends on whether the configured model/provider supports file-native inputs.
 - Text-only models may still fail on binary documents even though the API accepts them.
 - The LLM-backed DSPy stages validate their outputs and retry up to `DSPY_RETRY_ATTEMPTS` times before recording a workflow error.
+
+### Human Review Workflow
+
+The browser UI supports:
+
+- use case naming
+- multi-document batch upload
+- review of machine-drafted fields
+- adding, editing, and deleting fields before approval
+- SQLite persistence of reviewed final fields
+
+SQLite storage path:
+
+```text
+storage/review_workflow.db
+```
+
+Uploaded review-source files are stored under:
+
+```text
+storage/uploads/
+```
+
+### MIPROv2 Export
+
+Approved reviewed records can be exported as JSONL for DSPy `MIPROv2` training:
+
+```bash
+curl -OJ http://127.0.0.1:8000/api/training/miprov2-export.jsonl
+```
+
+Optional filters:
+
+```bash
+curl -OJ "http://127.0.0.1:8000/api/training/miprov2-export.jsonl?use_case_name=Invoice%20Summary%20Extraction"
+curl -OJ "http://127.0.0.1:8000/api/training/miprov2-export.jsonl?batch_id=batch_123"
+```
+
+Each JSONL row contains:
+
+- use case and batch metadata
+- document metadata and stored file path
+- machine draft fields
+- final human-reviewed fields
+- processing errors
+
+For a trainset already shaped as DSPy examples with `input` and `ideal_output`, use:
+
+```bash
+curl -OJ http://127.0.0.1:8000/api/training/miprov2-trainset.jsonl
+```
+
+Each trainset row contains:
+
+- `input`
+  - use case metadata
+  - document metadata
+  - stored source file path
+  - draft fields
+  - processing errors
+- `ideal_output`
+  - final reviewed fields
+- `metadata`
+  - batch and reviewer information
 
 ## Future model changes
 
