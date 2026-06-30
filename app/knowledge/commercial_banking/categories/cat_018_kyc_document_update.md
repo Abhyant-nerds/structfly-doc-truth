@@ -2,6 +2,7 @@
 id: CAT-018
 title: KYC Document Update
 type: category
+description: Customer request to update or submit KYC, PAN, GST, incorporation, registration, tax, or compliance documents.
 business_domain: Customer Maintenance
 owner: Commercial Banking Operations
 version: 1.0
@@ -45,8 +46,8 @@ The request must involve updating or submitting compliance or identity documents
 
 ## Similar Categories
 
-- CAT-006 Company Name Change
-- CAT-008 Account Opening Status Inquiry
+- [CAT-006 Company Name Change](/categories/cat_006_company_name_change.md)
+- [CAT-008 Account Opening Status Inquiry](/categories/cat_008_account_opening_status_inquiry.md)
 
 ## Confidence Boost Signals
 

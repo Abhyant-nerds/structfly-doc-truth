@@ -2,6 +2,7 @@
 id: CAT-003
 title: Authorized Signatory Addition
 type: category
+description: Customer request to add a new authorized signatory, signer, mandate holder, or approver to an account.
 business_domain: User and Access Management
 owner: Commercial Banking Operations
 version: 1.0
@@ -33,6 +34,12 @@ Use this category when the customer asks to add a new authorized signatory, sign
 
 The request must ask to add a person as an authorized signer or approver.
 
+## Boundary Rules
+
+- Use this category when the customer wants to add or include a signer, approver, mandate holder, or authorized signatory.
+- If the customer wants to remove or revoke an existing signer, use [CAT-004 Authorized Signatory Removal](/categories/cat_004_authorized_signatory_removal.md).
+- If the customer is only submitting documents for an existing signer without an add request, consider [CAT-018 KYC Document Update](/categories/cat_018_kyc_document_update.md).
+
 ## Positive Examples
 
 - Please add Mr. Rao as an authorized signatory.
@@ -45,8 +52,8 @@ The request must ask to add a person as an authorized signer or approver.
 
 ## Similar Categories
 
-- CAT-004 Authorized Signatory Removal
-- CAT-018 KYC Document Update
+- [CAT-004 Authorized Signatory Removal](/categories/cat_004_authorized_signatory_removal.md)
+- [CAT-018 KYC Document Update](/categories/cat_018_kyc_document_update.md)
 
 ## Confidence Boost Signals
 

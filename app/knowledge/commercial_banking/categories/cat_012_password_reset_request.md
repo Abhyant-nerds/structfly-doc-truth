@@ -2,6 +2,7 @@
 id: CAT-012
 title: Password Reset Request
 type: category
+description: Customer request to reset a password, PIN, login credential, or security credential.
 business_domain: User and Access Management
 owner: Commercial Banking Operations
 version: 1.0
@@ -32,6 +33,12 @@ Use this category when the customer asks to reset password, PIN, login credentia
 
 The request must ask for credential reset.
 
+## Boundary Rules
+
+- Use this category when reset, forgot, unlock credential, PIN reset, or password reset intent is explicit.
+- If the customer reports internet banking access failure without reset intent, use [CAT-011 Internet Banking Access Issue](/categories/cat_011_internet_banking_access_issue.md).
+- If the customer asks to update the registered mobile number used for OTPs, use [CAT-002 Registered Phone Number Change](/categories/cat_002_registered_phone_number_change.md).
+
 ## Positive Examples
 
 - Please reset our internet banking password.
@@ -42,7 +49,7 @@ The request must ask for credential reset.
 
 ## Similar Categories
 
-- CAT-011 Internet Banking Access Issue
+- [CAT-011 Internet Banking Access Issue](/categories/cat_011_internet_banking_access_issue.md)
 
 ## Confidence Boost Signals
 

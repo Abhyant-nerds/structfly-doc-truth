@@ -18,6 +18,7 @@ dependencies = [
   "dspy",
   "langgraph",
   "pydantic-settings",
+  "PyYAML",
   "python-multipart",
   "jinja2",
 ]

@@ -142,6 +142,19 @@ The category knowledge lives under:
 app/knowledge/commercial_banking/
 ```
 
+The knowledge bundle follows the repo's OKF-style markdown conventions:
+
+- `index.md` files provide progressive disclosure for humans and agents
+- each category file has YAML frontmatter plus structured markdown guidance
+- `related` category IDs are mirrored by markdown links in Similar Categories sections
+- `log.md` records knowledge updates
+
+Validate the knowledge bundle after category edits:
+
+```bash
+uv run python -m app.classification.validate_knowledge
+```
+
 Use the POC notebook for manual testing:
 
 ```text

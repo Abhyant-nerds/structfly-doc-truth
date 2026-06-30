@@ -2,6 +2,7 @@
 id: CAT-019
 title: Account Statement Request
 type: category
+description: Customer request for account statements, balance certificates, transaction history, or account ledger copies.
 business_domain: Account Maintenance
 owner: Commercial Banking Operations
 version: 1.0
@@ -43,7 +44,7 @@ The request must ask for a statement, certificate, or transaction history.
 
 ## Similar Categories
 
-- CAT-016 Payment Status Inquiry
+- [CAT-016 Payment Status Inquiry](/categories/cat_016_payment_status_inquiry.md)
 
 ## Confidence Boost Signals
 

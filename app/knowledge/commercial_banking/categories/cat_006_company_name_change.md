@@ -2,6 +2,7 @@
 id: CAT-006
 title: Company Name Change
 type: category
+description: Customer request to update bank records after a legal entity, business, or company name change.
 business_domain: Customer Maintenance
 owner: Commercial Banking Operations
 version: 1.0
@@ -42,7 +43,7 @@ The request must involve changing the customer's company or legal entity name.
 
 ## Similar Categories
 
-- CAT-018 KYC Document Update
+- [CAT-018 KYC Document Update](/categories/cat_018_kyc_document_update.md)
 
 ## Confidence Boost Signals
 

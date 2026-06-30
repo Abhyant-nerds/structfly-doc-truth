@@ -2,6 +2,7 @@
 id: CAT-009
 title: Cheque Book Request
 type: category
+description: Customer request for a new cheque book, replacement cheque book, or additional cheque leaves.
 business_domain: Cheque and Card Services
 owner: Commercial Banking Operations
 version: 1.0
@@ -42,7 +43,7 @@ The request must ask for cheque book issuance or replacement.
 
 ## Similar Categories
 
-- CAT-010 Debit Card Request
+- [CAT-010 Debit Card Request](/categories/cat_010_debit_card_request.md)
 
 ## Confidence Boost Signals
 

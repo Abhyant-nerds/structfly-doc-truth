@@ -2,6 +2,7 @@
 id: CAT-007
 title: Account Closure Request
 type: category
+description: Customer request to close, terminate, or deactivate a current or business account.
 business_domain: Account Maintenance
 owner: Commercial Banking Operations
 version: 1.0
@@ -42,7 +43,7 @@ The request must ask to close or terminate an account.
 
 ## Similar Categories
 
-- CAT-019 Account Statement Request
+- [CAT-019 Account Statement Request](/categories/cat_019_account_statement_request.md)
 
 ## Confidence Boost Signals
 

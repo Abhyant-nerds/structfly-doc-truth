@@ -2,6 +2,7 @@
 id: CAT-005
 title: Company Address Update
 type: category
+description: Customer request to update registered, mailing, office, branch, or communication address details.
 business_domain: Customer Maintenance
 owner: Commercial Banking Operations
 version: 1.0
@@ -33,6 +34,12 @@ Use this category when the customer asks to update registered, mailing, office, 
 
 The request must specify an address update.
 
+## Boundary Rules
+
+- Use this category only when the requested record change is for a physical, registered, mailing, office, branch, or communication address.
+- If the request asks to update email or phone details, use [CAT-001 Registered Email Change](/categories/cat_001_registered_email_change.md) or [CAT-002 Registered Phone Number Change](/categories/cat_002_registered_phone_number_change.md).
+- If the request says only "communication details" without specifying address, email, or phone, route to [CAT-020 General Service Request](/categories/cat_020_general_service_request.md) for review.
+
 ## Positive Examples
 
 - Please update our registered office address.
@@ -45,8 +52,8 @@ The request must specify an address update.
 
 ## Similar Categories
 
-- CAT-001 Registered Email Change
-- CAT-002 Registered Phone Number Change
+- [CAT-001 Registered Email Change](/categories/cat_001_registered_email_change.md)
+- [CAT-002 Registered Phone Number Change](/categories/cat_002_registered_phone_number_change.md)
 
 ## Confidence Boost Signals
 

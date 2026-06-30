@@ -2,6 +2,7 @@
 id: CAT-001
 title: Registered Email Change
 type: category
+description: Customer request to update the registered email address used for banking records, alerts, statements, or communication.
 business_domain: Customer Maintenance
 owner: Commercial Banking Operations
 version: 1.0
@@ -34,6 +35,12 @@ Use this category when the customer asks to update the registered email address 
 
 The email should clearly ask the bank to change an email address in bank records.
 
+## Boundary Rules
+
+- Use this category only when the requested record change is for an email address.
+- If the request asks to update a phone, mobile, or OTP number, use [CAT-002 Registered Phone Number Change](/categories/cat_002_registered_phone_number_change.md).
+- If the request says only "communication details" without naming email, route to [CAT-020 General Service Request](/categories/cat_020_general_service_request.md) for review.
+
 ## Positive Examples
 
 - Please update our registered email address.
@@ -46,8 +53,8 @@ The email should clearly ask the bank to change an email address in bank records
 
 ## Similar Categories
 
-- CAT-002 Registered Phone Number Change
-- CAT-005 Company Address Update
+- [CAT-002 Registered Phone Number Change](/categories/cat_002_registered_phone_number_change.md)
+- [CAT-005 Company Address Update](/categories/cat_005_company_address_update.md)
 
 ## Confidence Boost Signals
 

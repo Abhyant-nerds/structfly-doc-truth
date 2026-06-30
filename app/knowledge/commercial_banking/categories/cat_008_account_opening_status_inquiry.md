@@ -2,6 +2,7 @@
 id: CAT-008
 title: Account Opening Status Inquiry
 type: category
+description: Customer inquiry about the status of a business account opening, onboarding, or application process.
 business_domain: Account Maintenance
 owner: Commercial Banking Operations
 version: 1.0
@@ -42,7 +43,7 @@ The request must ask about the status of account opening.
 
 ## Similar Categories
 
-- CAT-018 KYC Document Update
+- [CAT-018 KYC Document Update](/categories/cat_018_kyc_document_update.md)
 
 ## Confidence Boost Signals
 

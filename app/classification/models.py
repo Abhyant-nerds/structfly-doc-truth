@@ -33,6 +33,7 @@ class EmailClassificationResponse(BaseModel):
 class CategoryDocument(BaseModel):
     category_id: str
     title: str
+    description: str = ""
     business_domain: str
     owner: str = ""
     version: str = ""

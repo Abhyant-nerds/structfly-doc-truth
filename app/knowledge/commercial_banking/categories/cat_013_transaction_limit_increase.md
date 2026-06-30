@@ -2,6 +2,7 @@
 id: CAT-013
 title: Transaction Limit Increase
 type: category
+description: Customer request to increase payment, transfer, transaction, daily, or beneficiary limits.
 business_domain: Payments and Transfers
 owner: Commercial Banking Operations
 version: 1.0
@@ -42,7 +43,7 @@ The request must ask for a limit increase or enhancement.
 
 ## Similar Categories
 
-- CAT-016 Payment Status Inquiry
+- [CAT-016 Payment Status Inquiry](/categories/cat_016_payment_status_inquiry.md)
 
 ## Confidence Boost Signals
 

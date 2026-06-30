@@ -2,6 +2,7 @@
 id: CAT-016
 title: Payment Status Inquiry
 type: category
+description: Customer inquiry asking whether a payment, RTGS, NEFT, IMPS, or wire transfer was completed, credited, or processed.
 business_domain: Payments and Transfers
 owner: Commercial Banking Operations
 version: 1.0
@@ -35,6 +36,12 @@ Use this category when the customer asks whether a payment, RTGS, NEFT, IMPS, or
 
 The customer should be asking for status or confirmation of a payment.
 
+## Boundary Rules
+
+- Use this category when the customer asks to check, confirm, trace, or report the status of a payment without clearly stating failure.
+- If the customer says the transaction failed, was rejected, was returned, or needs reversal, use [CAT-017 Failed Transaction Investigation](/categories/cat_017_failed_transaction_investigation.md).
+- If the customer asks to increase a payment or transfer limit, use [CAT-013 Transaction Limit Increase](/categories/cat_013_transaction_limit_increase.md).
+
 ## Positive Examples
 
 - Please confirm whether the RTGS was successfully processed.
@@ -46,7 +53,7 @@ The customer should be asking for status or confirmation of a payment.
 
 ## Similar Categories
 
-- CAT-017 Failed Transaction Investigation
+- [CAT-017 Failed Transaction Investigation](/categories/cat_017_failed_transaction_investigation.md)
 
 ## Confidence Boost Signals
 

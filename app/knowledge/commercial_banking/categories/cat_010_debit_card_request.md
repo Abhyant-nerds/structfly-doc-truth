@@ -2,6 +2,7 @@
 id: CAT-010
 title: Debit Card Request
 type: category
+description: Customer request for debit card issuance, replacement, blocking, unblocking, or reissue.
 business_domain: Cheque and Card Services
 owner: Commercial Banking Operations
 version: 1.0
@@ -42,7 +43,7 @@ The request must involve debit card issuance, replacement, blocking, or reissue.
 
 ## Similar Categories
 
-- CAT-009 Cheque Book Request
+- [CAT-009 Cheque Book Request](/categories/cat_009_cheque_book_request.md)
 
 ## Confidence Boost Signals
 

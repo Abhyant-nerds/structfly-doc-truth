@@ -2,6 +2,7 @@
 id: CAT-020
 title: General Service Request
 type: category
+description: Fallback category for broad, unclear, or underspecified service requests that do not clearly match a specific category.
 business_domain: Fallback
 owner: Commercial Banking Operations
 version: 1.0
@@ -35,6 +36,12 @@ Use this fallback category when the customer request does not clearly match a sp
 
 Use when the specific operational task is ambiguous or not covered by another category.
 
+## Boundary Rules
+
+- Use this category only when the email lacks enough evidence to choose a specific operational category.
+- Do not use this category when a specific request is clearly supported by category evidence.
+- If multiple specific categories are plausible and the text does not resolve the ambiguity, keep this category and mark the case for review.
+
 ## Positive Examples
 
 - Please update our communication details, without specifying email, phone, or address.
@@ -46,9 +53,9 @@ Use when the specific operational task is ambiguous or not covered by another ca
 
 ## Similar Categories
 
-- CAT-001 Registered Email Change
-- CAT-002 Registered Phone Number Change
-- CAT-005 Company Address Update
+- [CAT-001 Registered Email Change](/categories/cat_001_registered_email_change.md)
+- [CAT-002 Registered Phone Number Change](/categories/cat_002_registered_phone_number_change.md)
+- [CAT-005 Company Address Update](/categories/cat_005_company_address_update.md)
 
 ## Confidence Boost Signals
 

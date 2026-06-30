@@ -3182,6 +3182,7 @@ dependencies = [
     { name = "langgraph" },
     { name = "pydantic-settings" },
     { name = "python-multipart" },
+    { name = "pyyaml" },
     { name = "uvicorn" },
 ]
 
@@ -3205,6 +3206,7 @@ requires-dist = [
     { name = "notebook", marker = "extra == 'dev'" },
     { name = "pydantic-settings" },
     { name = "python-multipart" },
+    { name = "pyyaml" },
     { name = "uvicorn" },
 ]
 provides-extras = ["dev"]

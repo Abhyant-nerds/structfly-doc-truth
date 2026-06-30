@@ -2,6 +2,7 @@
 id: CAT-002
 title: Registered Phone Number Change
 type: category
+description: Customer request to update the registered phone, mobile, contact number, or OTP alert number in bank records.
 business_domain: Customer Maintenance
 owner: Commercial Banking Operations
 version: 1.0
@@ -36,6 +37,12 @@ Use this category when the customer asks to update the registered phone number, 
 
 The email should clearly indicate that a phone or mobile number should be changed or updated in bank records.
 
+## Boundary Rules
+
+- Use this category only when the requested record change is for a phone, mobile, contact, or OTP alert number.
+- If the request asks to update an email address, use [CAT-001 Registered Email Change](/categories/cat_001_registered_email_change.md).
+- If the request reports OTP delivery or login trouble without asking to change the registered number, consider [CAT-011 Internet Banking Access Issue](/categories/cat_011_internet_banking_access_issue.md) or review.
+
 ## Positive Examples
 
 - Please update our registered mobile number.
@@ -48,9 +55,9 @@ The email should clearly indicate that a phone or mobile number should be change
 
 ## Similar Categories
 
-- CAT-001 Registered Email Change
-- CAT-005 Company Address Update
-- CAT-020 General Service Request
+- [CAT-001 Registered Email Change](/categories/cat_001_registered_email_change.md)
+- [CAT-005 Company Address Update](/categories/cat_005_company_address_update.md)
+- [CAT-020 General Service Request](/categories/cat_020_general_service_request.md)
 
 ## Confidence Boost Signals
 

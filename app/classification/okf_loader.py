@@ -4,6 +4,8 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from app.classification.models import CategoryDocument
 
 
@@ -12,45 +14,21 @@ CATEGORY_DIR = KNOWLEDGE_ROOT / "categories"
 CATALOG_PATH = KNOWLEDGE_ROOT / "issue_catalog.md"
 
 
-def _coerce_value(value: str) -> str | float:
-    stripped = value.strip().strip('"').strip("'")
-    try:
-        return float(stripped)
-    except ValueError:
-        return stripped
-
-
 def _parse_front_matter(markdown: str) -> dict[str, Any]:
     lines = markdown.splitlines()
     if not lines or lines[0].strip() != "---":
         return {}
 
-    metadata: dict[str, Any] = {}
-    current_list_key: str | None = None
+    try:
+        end = lines[1:].index("---") + 1
+    except ValueError:
+        return {}
 
-    for line in lines[1:]:
-        stripped = line.strip()
-        if stripped == "---":
-            break
-        if not stripped:
-            continue
-        if stripped.startswith("- ") and current_list_key:
-            metadata.setdefault(current_list_key, []).append(_coerce_value(stripped[2:]))
-            continue
-        if ":" not in stripped:
-            continue
-
-        key, raw_value = stripped.split(":", 1)
-        key = key.strip()
-        raw_value = raw_value.strip()
-        if raw_value:
-            metadata[key] = _coerce_value(raw_value)
-            current_list_key = None
-        else:
-            metadata[key] = []
-            current_list_key = key
-
-    return metadata
+    front_matter = "\n".join(lines[1:end])
+    parsed = yaml.safe_load(front_matter) or {}
+    if not isinstance(parsed, dict):
+        return {}
+    return parsed
 
 
 @lru_cache(maxsize=1)
@@ -78,6 +56,7 @@ def load_category_documents() -> tuple[CategoryDocument, ...]:
             CategoryDocument(
                 category_id=category_id,
                 title=title,
+                description=str(metadata.get("description", "")).strip(),
                 business_domain=str(metadata.get("business_domain", "")).strip(),
                 owner=str(metadata.get("owner", "")).strip(),
                 version=str(metadata.get("version", "")).strip(),

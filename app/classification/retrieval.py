@@ -66,7 +66,9 @@ def _tokens(text: str) -> list[str]:
 
 
 def _category_text(doc: CategoryDocument) -> str:
-    return " ".join([doc.category_id, doc.title, doc.business_domain, " ".join(doc.tags), doc.markdown])
+    return " ".join(
+        [doc.category_id, doc.title, doc.description, doc.business_domain, " ".join(doc.tags), doc.markdown]
+    )
 
 
 def build_query_terms(subject: str, body: str, routing_summary: dict[str, Any]) -> list[str]:
